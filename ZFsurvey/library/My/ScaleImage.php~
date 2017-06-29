@@ -1,0 +1,34 @@
+<?php
+
+class My_ScaleImage
+{
+    public function scale($filename)
+    {
+        $img_info = getimagesize($filename);
+        $img_x = $img_info[0];
+        $img_y = $img_info[1];
+        $img_type = $img_info[2];
+        
+        if( $img_x <= 240 ) {
+            return false;
+        }
+        
+        $width = 240;
+        $height = $img_y * 240 / $img_x;
+        $new_img = imagecreatetruecolor($width, $height);
+        
+        if( $img_type == IMAGETYPE_JPEG ) {
+            $img = imagecreatefromjpeg($filename);
+            imagecopyresampled($new_img, $img, 0, 0, 0, 0, $width, $height, $img_x, $img_y);
+            imagejpeg($new_img, $filename, 95);
+        } elseif( $img_type == IMAGETYPE_GIF ) {
+            $img = imagecreatefromgif($filename);
+            imagecopyresampled($new_img, $img, 0, 0, 0, 0, $width, $height, $img_x, $img_y);
+            imagegif($new_img, $filename);
+        } elseif( $img_type == IMAGETYPE_PNG ) {
+            $img = imagecreatefrompng($filename);
+            imagecopyresampled($new_img, $img, 0, 0, 0, 0, $width, $height, $img_x, $img_y);
+            imagepng($new_img, $filename);
+        }
+    }
+}

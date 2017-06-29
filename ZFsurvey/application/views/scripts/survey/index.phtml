@@ -1,0 +1,117 @@
+<div id="headline">Moje ankiety</div>
+
+<?php if( !isset($this->surveys['survey_id']) ): ?>
+
+<div class="info" style="text-align: center;">
+    <div style="float: left;"><img src="<?php echo $this->baseUrl('images/info.png'); ?>" width="20" height="20"></div>
+    <div class="infotext">Nie masz dodanych ankiet na koncie</div>
+</div>
+
+<div class="center">
+    <p>
+    <a href="<?php echo $this->url(array('controller' => 'survey', 'action' => 'addsurveyform', 'module' => 'default'), 'default', true) ?>" class="btn">Dodaj ankietę</a>
+    </p>
+</div>
+
+<?php else: ?>
+
+<div id="headbox" style="width: 756px;">
+    <div style="margin-left: 100px; float: left;">Tytuł</div>
+    <div style="margin-left: 104px; float: left;">Data</div>
+    <div style="margin-left: 105px; float: left;">Status</div>
+</div>
+
+<?php foreach ($this->surveys as $k => $survey): ?>
+
+
+<div class="surveylist">
+    <div class="surveyrow">
+        <div style="width: 200px; margin-top: -2px; font-weight: bold;">
+            <a href="<?php echo $this->url(array('action' => 'startmsg', 'controller' => 'show', 'id' => $survey['survey_id']), 'default', true) ?>"><?php echo $survey['title'] ?></a>
+        </div>
+    </div>
+    <div class="surveyrow"><div style="width: 120px; margin-top: -2px;"><?php echo $survey['date'] ?></div></div>
+    <div class="surveyrow">
+        <div style="width: 180px; margin-top: -2px;">
+            <?php if( $survey['status'] ): ?>
+                <b>aktywna/</b><a href="<?php echo $this->url(array('action' => 'changestatus', 'controller' => 'survey', 'survey_id' => $survey['survey_id'], 'actionname' => 'index'), 'default', true) ?>">nieaktywna</a>
+            <?php else: ?>
+                <a href="<?php echo $this->url(array('action' => 'changestatus', 'controller' => 'survey', 'survey_id' => $survey['survey_id'], 'actionname' => 'index'), 'default', true) ?>">aktywna</a><b>/nieaktywna</b>
+            <?php endif; ?>
+        </div>
+    </div>
+    <div class="surveyrow"><div style="width: 46px; margin-top: -10px;">
+        <a href="<?php echo $this->url(array('action' => 'index', 'controller' => 'result', 'survey_id' => $survey['survey_id']), 'default', true) ?>" class="basiclink">
+            <img src="<?php echo $this->baseUrl('images/result.png'); ?>" alt="Analiza" title="Analizuj wyniki" width="32" height="32">
+        </a>
+    </div></div>
+    <div class="surveyrow"><div style="width: 37px; margin-top: -10px;">
+        <a href="<?php echo $this->url(array('action' => 'surveyform', 'controller' => 'result', 'id' => $survey['survey_id']), 'default', true) ?>" class="basiclink">
+            <img src="<?php echo $this->baseUrl('images/addresponse.png'); ?>" alt="Wypełnij" title="Wypełnij ankietę" width="32" height="32">
+        </a>
+    </div></div>
+    <div class="surveyrow"><div style="width: 41px; margin-top: -10px;">
+        <a href="<?php echo $this->url(array('action' => 'questionnaire', 'controller' => 'result', 'survey_id' => $survey['survey_id']), 'default', true) ?>" class="basiclink">
+            <img src="<?php echo $this->baseUrl('images/questionaire.png'); ?>" alt="Kwestionariusz" title="Pobierz kwestionariusz" width="32" height="32">
+        </a>
+    </div></div>
+    <div class="surveyrow"><div style="width: 37px; margin-top: -10px;">
+        <a href="<?php echo $this->url(array('action' => 'edit', 'controller' => 'survey', 'survey_id' => $survey['survey_id']), 'default', true) ?>" class="basiclink">
+            <img src="<?php echo $this->baseUrl('images/edit.png'); ?>" alt="Edytuj" title="Edytuj ankietę" width="32" height="32">
+        </a>
+    </div></div>
+    <div class="surveyrow"><div class="deletesurvey" style="width: 40px; margin-top: -10px; cursor: pointer;" onclick="survey_id = <?php echo $survey['survey_id'] ?>; surveytitle = '<?php echo $survey['title'] ?>';">
+        <img src="<?php echo $this->baseUrl('images/delete32.png'); ?>" alt="Usuń" title="Usuń ankietę" width="32" height="32" class="delete">
+    </div></div>
+</div>
+
+<?php endforeach; ?>
+
+<div style="margin-top: 35px; margin-left: 677px;">
+    <p>
+    <a href="<?php echo $this->url(array('controller' => 'survey', 'action' => 'addsurveyform', 'module' => 'default'), 'default', true) ?>" class="btn">Dodaj ankietę</a>
+    </p>
+</div>
+
+<?php endif; ?>
+
+<div id="confirm">
+    <div id="confirminfo">
+        <img src="<?php echo $this->baseUrl('images/close.png'); ?>" id="close" alt="Usuń" title="Usuń ankietę" width="32" height="32">
+        <p>Czy napewno chcesz usunąć ankietę <b><span></span></b>?</p>
+        <div class="button confirmyes">Tak</div>
+        <div class="button confirmno">Nie</div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $(".deletesurvey").click(function(){
+        $("#confirm").show();
+        $("#confirminfo span").text(surveytitle);
+    });
+	$("#confirm").click(function(){
+        $("#confirm").hide();
+    });
+    $("#close").click(function(){
+        $("#confirm").hide();
+    });
+    $(".confirmno").click(function(){
+        $("#confirm").hide();
+    });
+    $("#confirminfo").click(function() {  
+        return false;
+    });
+    $(".confirmyes").click(function(){
+        $.ajax({
+            url: "<?=$this->url(array('action' => 'deletesurvey', 'process' => 'json')); ?>",
+            type: "POST",
+            data: "survey_id=" + survey_id,
+            success: function(html) {
+                window.location.href = '<?php echo $this->url(array('controller' => 'survey', 'action' => 'index', 'module' => 'default'), 'default', true) ?>';
+            }
+        });   
+     });   
+});
+</script>

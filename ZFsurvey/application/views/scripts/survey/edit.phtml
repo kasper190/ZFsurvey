@@ -1,0 +1,39 @@
+<div id="headline">Edycja ankiety</div>
+
+<div id="editbox">
+    <a href="<?php echo $this->url(array('action' => 'editsurvey', 'controller' => 'survey', 'survey_id' => $this->survey_id), 'default') ?>" class="basiclink">
+    <div class="editcell">
+	<div class="edittext">Podstawowe</div>
+	<div class="editimg64"><img src="<?php echo $this->baseUrl('images/basic.png'); ?>" width="64" height="64"></div>
+    </div>
+    </a>
+    <a href="<?php echo $this->url(array('action' => 'template', 'controller' => 'survey', 'case' => 'edit', 'survey_id' => $this->survey_id), 'default') ?>" class="basiclink">
+    <div class="editcell">
+        <div class="edittext">Wygląd</div>
+	<div class="editimg64"><img src="<?php echo $this->baseUrl('images/theme.png'); ?>" width="64" height="64"></div>
+    </div>
+    </a>    
+    <a href="<?php echo $this->url(array('action' => 'questionlist', 'controller' => 'survey', 'survey_id' => $this->survey_id), 'default') ?>" class="basiclink">
+    <div class="editcell">
+        <div class="edittext">Pytania</div>
+        <div class="editimg48"><img src="<?php echo $this->baseUrl('images/question.png'); ?>" width="48" height="48"></div>
+    </div>
+    </a>
+    <a href="<?php echo $this->url(array('controller' => 'survey', 'action' => 'address', 'survey_id' => $this->survey_id), 'default', true) ?>" class="basiclink">
+    <div class="editcell">
+        <div class="edittext">Adres URL</div>
+	<div class="editimg48"><img src="<?php echo $this->baseUrl('images/adress.png'); ?>" width="48" height="48"></div>
+    </div>
+    </a>
+</div>
+
+
+<?php if( $this->status ): ?>
+<div style="margin-left: 545px; margin-top: 25px;">
+    <a href="<?php echo $this->url(array('action' => 'changestatus', 'controller' => 'survey', 'survey_id' => $this->survey_id, 'actionname' => 'edit'), 'default', true) ?>" class="btn">Dezaktywuj ankietę</a>
+</div>
+<?php else: ?>
+<div style="margin-left: 570px; margin-top: 25px;">
+    <a href="<?php echo $this->url(array('action' => 'changestatus', 'controller' => 'survey', 'survey_id' => $this->survey_id, 'actionname' => 'edit'), 'default', true) ?>" class="btn">Aktywuj ankietę</a>
+</div>
+<?php endif; ?>

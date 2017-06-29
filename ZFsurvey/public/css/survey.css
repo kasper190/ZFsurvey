@@ -1,0 +1,106 @@
+body{
+    background: #B8BDC2;
+    color: black;
+    margin: 0;
+    padding: 0;
+    font-family: "Arial", "Verdana", "Geneva", sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    overflow-y: scroll;
+}
+img {
+    border: 0px;
+}
+#frame{
+    width: 840px;
+    background: #1C4166;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0px 70px 70px 70px;
+}
+#header {
+    width: 840px;
+    min-height: 120px;
+}
+#header:after {
+    content:'';
+    display:block;
+    clear:both;
+}
+#titlefont {
+    float: left;
+    font-size: 40px;
+}
+.titlecenter {
+    width: 840px;
+    margin-top: 35px;
+    margin-bottom: 35px;
+    text-align: center;
+}
+#main{
+    width: 740px;
+    min-height: 200px;
+    margin-left: auto ;
+    margin-right: auto ;
+    padding: 50px;
+}
+#accessdenied {
+    margin-top: 110px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+}
+#asterisk {
+    margin-top: -20px;
+    margin-bottom: 40px;
+    margin-left: 575px;  
+}
+#msg {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+}
+.textarea {
+    width: 450px; 
+    height: 90px;
+    border: 2px solid #a1a1a1;
+    background: #f3f3f3;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    color: #2a2a2a;
+    font-family: "Arial", "Verdana", "Geneva", sans-serif;
+    font-size: 14px;
+    padding: 5px;
+}
+.textarea:focus {
+    background: #ffffff;
+    color: #000000;
+}
+.question {
+    font-size: 18px;
+    font-weight: bold;
+}
+.answer {
+    margin-top: 10px;
+    margin-bottom: 50px;
+}
+select {
+    border: 1px solid #a1a1a1;
+    background: #f3f3f3;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    padding: 5px 15px 5px 15px;
+}
+a:link {
+    color: #11304F;
+}
+a:visited {
+    color: #11304F;
+}

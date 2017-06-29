@@ -1,0 +1,93 @@
+<style type="text/css">
+*, * focus {
+	outline: none;
+	margin: 0;
+	padding: 0;
+}
+</style>
+
+<div id="headline">Respondenci</div>
+
+<div class="info">
+    <div style="float: left;"><img src="<?php echo $this->baseUrl('images/info.png'); ?>" width="20" height="20"></div>
+    <div class="infotext">Kliknij w wiersz z wybranym respondentem, aby zobaczyć udzielone przez niego odpowiedzi</div>
+</div>
+
+<div id="headbox" style="width: 570px;">
+    <div style="margin-left: 58px; float: left;">Respondent</div>
+    <div style="margin-left: 104px; float: left;">Data</div>
+    <div style="margin-left: 100px; float: left;">Adres IP</div>
+</div>
+
+<div class="container" style="width: 600px; margin-left: 120px;">
+    <?php foreach ($this->respondent as $i => $r): ?>
+    <div class="respondent" onclick="respondent_id = '<?php echo $r['respondent_id'] ?>'">
+        <div class="respondentrow"><div style="margin-top: 2px; margin-left: 15px;"><img src="<?php echo $this->baseUrl('images/user.png'); ?>" width="24" height="22"></div></div>
+	<div class="respondentrow"><div style="margin-top: 5px; margin-left: 10px; width: 150px; font-weight: bold;">Respondent #<?php echo ($i + 1) ?></div></div>
+	<div class="respondentrow"><div style="margin-top: 5px; margin-left: 0px;"><?php echo $r['date'] ?></div></div>
+	<div class="respondentrow"><div style="margin-top: 5px; margin-left: 40px; width: 120px;"><?php echo $r['ip'] ?></div></div>
+        <div class="respondentrow"><div style="margin-top: 2px; margin-left: 30px;"><img src="<?php echo $this->baseUrl('images/delete24.png'); ?>" alt="Usuń" title="Usuń" width="24" height="24" class="delete" onclick="respondent_id = '<?php echo $r['respondent_id'] ?>'; lp = <?php echo ($i + 1) ?>;"></div></div>
+    </div>
+	<div class="toggle_container" style="display: none;">
+		<div class="block">
+                    <div class="request<?php echo $r['respondent_id'] ?>" style="width: 580px; margin: 10px; min-height: 200px; margin-top: 0px; margin-left: 35px;"></div>
+		</div>
+	</div>
+    <?php endforeach; ?>
+</div>
+
+<div id="confirm">
+    <div id="confirminfo">
+        <img src="<?php echo $this->baseUrl('images/close.png'); ?>" id="close" alt="Usuń" title="Usuń ankietę" width="32" height="32">
+        <p>Czy napewno chcesz usunąć <b>Respondenta #<span><span></b>?</p>
+        <div class="button confirmyes">Tak</div>
+        <div class="button confirmno">Nie</div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#confirm").click(function(){
+        $("#confirm").hide();
+    });
+    $("#close").click(function(){
+        $("#confirm").hide();
+    });
+    $(".confirmno").click(function(){
+        $("#confirm").hide();
+    });
+    $("#confirminfo").click(function() {  
+        return false;
+    });
+    $(".delete").click(function() {
+        $("#confirm").show();
+        $("#confirminfo span").text(lp);
+        return false;
+    }); 
+	$(".toggle_container").hide();
+	$("div.respondent").click(function(){
+        $(this).toggleClass("active").next().slideToggle("slow");
+        $.ajax({
+            url: "<?=$this->url(array('controller' => 'result', 'action' => 'response', 'format' => 'html')); ?>",
+            type: "POST",
+            data: "respondent_id=" + respondent_id,
+            success: function(html) {
+                $(".request" + respondent_id ).empty();
+                $(".request" + respondent_id ).append(html);
+            }
+        }); 
+	});
+    $(".confirmyes").click(function(){
+        $("#confirminfo span").text(lp);
+        $.ajax({
+            url: "<?=$this->url(array('controller' => 'result', 'action' => 'deleterespondent', 'process' => 'json')); ?>",
+            type: "POST",
+            data: "respondent_id=" + respondent_id,
+            success: function(del) {
+                window.location.href = '<?php echo $this->url(array('controller' => 'result', 'action' => 'respondents', 'survey_id' => $this->survey_id, 'module' => 'default'), 'default', true) ?>';
+            }
+        });   
+     });  
+});
+</script>

@@ -1,0 +1,20 @@
+<div class="stitlebox">
+    <div class="stitle"><?php echo $this->question ?></div>
+</div>
+<table style="width: 768px;">
+    <thead>
+        <tr>
+            <th></th>
+            <th style="width: 675px;">Odpowiedź</th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($this->response as $i => $a): ?>
+        <tr>
+            <td style="padding: 0px 8px; font-weight: bold;"><?php echo ($i + 1) ?>.</td>
+            <td style="padding: 6px 10px 6px 0px; "><?php echo $a['response'] ?></td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>
+

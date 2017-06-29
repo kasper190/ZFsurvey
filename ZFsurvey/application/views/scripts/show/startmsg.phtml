@@ -1,0 +1,16 @@
+<div id="msg" style="margin-top: 60px;"><?php echo $this->s['start_msg'] ?></div>
+
+<form action="<?php echo $this->url(array('action' => 'surveyform', 'controller' => 'show', 'id' => $this->s['survey_id']), 'default', true) ?>" method="get" style="margin-top: 50px; text-align: center;">
+    <input value="Start" type="submit" id="start">
+</form>
+
+<script type="text/javascript" src="<?php echo $this->baseUrl('js/jquery.corner.js'); ?>"></script>
+<script type="text/javascript">
+<?php if ( $this->t['radius'] ): ?>
+    $("#start").corner();
+<?php else: ?>
+    $("#start").uncorner();
+<?php endif; ?>
+</script>
+
+

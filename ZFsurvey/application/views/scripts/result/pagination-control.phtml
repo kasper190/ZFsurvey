@@ -1,0 +1,21 @@
+<?php if ($this->pageCount): ?>
+    <div>  
+    <?php if (isset($this->previous)): ?>  
+        <a href="<?php echo $this->url(array('page' => $this->previous)); ?>">&lt; Poprzednia</a> |  
+    <?php else: ?>  
+        <span>&lt; Poprzednia</span> |  
+    <?php endif; ?>  
+    <?php foreach ($this->pagesInRange as $page): ?>  
+        <?php if ($page != $this->current): ?>  
+            <a href="<?php echo $this->url(array('page' => $page)); ?>"><?php echo $page; ?></a> |  
+        <?php  else: ?>  
+            <?php echo $page; ?> |  
+        <?php endif; ?>
+    <?php endforeach; ?> 
+    <?php if (isset($this->next)): ?>  
+        <a href="<?php echo $this->url(array('page' => $this->next)); ?>">Następna &gt;</a>  
+    <?php else: ?>  
+        <span>Następna &gt;</span>  
+    <?php endif; ?>  
+    </div>  
+<?php endif; ?> 

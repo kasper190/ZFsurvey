@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pl" lang="pl">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="ZFsurvey">
+        <meta name="keywords" content="survey, polls, ankiety">
+        <meta name="author" content="Krystian Kasperski">
+
+        <title>Ankiety - system do generowania ankiet internetowych</title>
+        <?php echo $this->headLink() ?>
+        <?php echo $this->headScript() ?>
+        <?php echo $this->headMeta() ?>
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl('css/style.css'); ?>" />
+        <script type="text/javascript" src="<?php echo $this->baseUrl('js/jquery.min.js') ?>"></script>
+    </head>
+    <body id="index">
+        <div id="wrapper"> 
+            <div id="header">
+                <div id="headerbox">
+                    <div id="banner">
+                        <a href="<?php echo $this->url(array(), 'index') ?>"><img src="<?php echo $this->baseUrl('images/logo.png'); ?>" width="245" height="85" style="margin-top: 19px; margin-left: 5px;"></a>
+                    </div>
+                    <div id="headermenu">
+                    <?php if ($this->identity): ?>
+                        <div class="headerlinks"><a href="<?php echo $this->url(array('controller' => 'auth', 'action' => 'logout', 'module' => 'default'), 'default', true) ?>">Wyloguj</a></div>
+                        <div class="headerlinks"><a href="<?php echo $this->url(array('controller' => 'auth', 'action' => 'changepasswordform', 'module' => 'default'), 'default', true) ?>">Zmień hasło</a></div>               
+                        <div class="headerlinks" style="margin-left: 0px;"><a href="<?php echo $this->url(array('controller' => 'survey', 'action' => 'index', 'module' => 'default'), 'default', true) ?>">Moje ankiety</a></div>
+                        
+                    <?php else: ?>
+                        <div class="headerlinks"><a href="<?php echo $this->url(array('controller' => 'auth', 'action' => 'forgotpasswordform', 'module' => 'default'), 'default', true) ?>">Zapomniałem hasło</a></div>
+                        <div class="headerlinks"><a href="<?php echo $this->url(array('controller' => 'auth', 'action' => 'registerform', 'module' => 'default'), 'default', true) ?>">Zarejestruj się</a></div>
+                        <div class="headerlinks" style="margin-left: 0px;"><a href="<?php echo $this->url(array('controller' => 'auth', 'action' => 'index', 'module' => 'default'), 'default', true) ?>">Zaloguj się</a></div>
+                    <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+            <div id="content">
+
+                <?php echo $this->layout()->content; ?>
+                
+            </div>
+            <div id="footer">
+        	
+            </div>
+        </div>
+    </body>
+</html>

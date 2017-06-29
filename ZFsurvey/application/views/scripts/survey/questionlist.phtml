@@ -1,0 +1,91 @@
+<div id="surveybox">
+    <div class="boxoff"><div class="tekstbox"><a href="<?php echo $this->url(array('action' => 'editsurvey', 'controller' => 'survey', 'survey_id' => $this->survey_id), 'default') ?>" class="basiclink">Podstawowe</a></div></div>
+    <div class="boxoff"><div class="tekstbox"><a href="<?php echo $this->url(array('action' => 'template', 'controller' => 'survey', 'case' => 'edit', 'survey_id' => $this->survey_id,), 'default') ?>" class="basiclink">Wygląd</a></div></div>
+    <div class="boxon"><div class="tekstbox"><a href="<?php echo $this->url(array('action' => 'questionlist', 'controller' => 'survey', 'survey_id' => $this->survey_id), 'default') ?>" class="basiclink">Pytania</a></div></div>
+    <div class="boxoff"><div class="tekstbox"><a href="<?php echo $this->url(array('controller' => 'survey', 'action' => 'address', 'survey_id' => $this->survey_id), 'default', true) ?>" class="basiclink">Adres</a></div></div>
+</div>
+
+<?php if( !isset($this->question[0]) ): ?>
+
+<div class="info" style="text-align: center; margin-top: 150px;">
+    <div style="float: left;"><img src="<?php echo $this->baseUrl('images/info.png'); ?>" width="20" height="20"></div>
+    <div class="infotext">Nie masz dodanych pytań do ankiety</div>
+</div>
+
+<div class="center">
+    <p>
+    <a href="<?php echo $this->url(array('controller' => 'survey', 'action' => 'addquestion', 'survey_id' => $this->survey_id, 'case' => 'edit'), 'default', true) ?>" class="btn">Dodaj pytanie</a>
+    </p>
+</div>
+
+<?php else: ?>
+
+<table style="margin-top: 40px; width: 768px;">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Odpowiedź</th>
+            <th style="width: 30px">edytuj</th>
+            <th style="width: 30px">usuń</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($this->question as $k => $question): ?>
+            <tr>
+                <td style="padding: 0px 8px; font-weight: bold; width: 40px;"><?php echo ($k + 1) ?>.</td>
+                <td style="padding: 6px 10px 6px 0px; "><?php echo $question['question'] ?></td>
+                <td style="padding: 0px; text-align: center;"><a href="<?php echo $this->url(array('action' => 'editquestion', 'controller' => 'survey', 'survey_id' => $this->survey_id, 'question_id' => $question['question_id']), 'default') ?>"><img src="<?php echo $this->baseUrl('images/edit20.png'); ?>" alt="Edytuj" title="Edytuj" width="20" height="20" style="margin-top: 2px;"></a></td>
+                <td style="padding: 0px; text-align: center;"><img src="<?php echo $this->baseUrl('images/delete24.png'); ?>" alt="Usuń" title="Usuń" width="24" height="24" class="delete" style="cursor: pointer;" onclick="question_id = '<?php echo $question['question_id'] ?>'; lp = '<?php echo ($k + 1) ?>';"></td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+
+<div style="margin-left: 683px; margin-top: 30px; margin-bottom: 20px;">
+    <a href="<?php echo $this->url(array('controller' => 'survey', 'action' => 'addquestion', 'survey_id' => $this->survey_id, 'case' => 'edit'), 'default', true) ?>" class="btn">Dodaj pytanie</a>
+</div>
+
+<?php endif; ?>
+
+<div id="confirm">
+    <div id="confirminfo">
+        <img src="<?php echo $this->baseUrl('images/close.png'); ?>" id="close" alt="Usuń" title="Usuń ankietę" width="32" height="32">
+        <p>Czy napewno chcesz usunąć <b>pytanie nr <span><span></b>?</p>
+        <div class="button confirmyes">Tak</div>
+        <div class="button confirmno">Nie</div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+	$("#confirm").click(function() {
+        $("#confirm").hide();
+    });
+    $("#close").click(function() {
+        $("#confirm").hide();
+    });
+    $(".confirmno").click(function() {
+        $("#confirm").hide();
+    });
+    $("#confirminfo").click(function() {  
+        return false;
+    });
+    $(".delete").click(function() {
+        $("#confirm").show();
+        $("#confirminfo span").text(lp);
+        return false;
+    });  
+    $(".confirmyes").click(function() {
+        $("#confirminfo span").text(lp);
+        $.ajax({
+            url: "<?=$this->url(array('action' => 'deletequestion', 'process' => 'json')); ?>",
+            type: "POST",
+            data: "question_id=" + question_id,
+            success: function(del) {
+                window.location.href = '<?php echo $this->url(array('controller' => 'survey', 'action' => 'questionlist', 'survey_id' => $this->survey_id), 'default', true) ?>';
+            }
+        });   
+     });   
+});
+</script>

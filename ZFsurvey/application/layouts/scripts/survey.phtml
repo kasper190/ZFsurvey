@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pl" lang="pl">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="ZFsurvey">
+        <meta name="keywords" content="survey, polls, ankiety">
+        <?php echo $this->headTitle($this->s['title']) ?>
+        <?php echo $this->headLink() ?>
+        <?php echo $this->headScript() ?>
+        <?php echo $this->headMeta() ?>
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl('css/survey.css'); ?>" />
+        <script type="text/javascript" src="<?php echo $this->baseUrl('js/jquery.min.js') ?>"></script>
+    </head>
+    <body id="index" style="background: <?php echo $this->t['background'] ?>;">
+        <div id="frame" style="background: <?php echo $this->t['frame'] ?>;"> 
+            <div id="header" style="color: <?php echo $this->t['titlefont'] ?>;">
+                <?php if ( $this->t['logo'] ): ?>
+                    <table cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td width="600" valign="center">
+                                <div id="titlefont" style="padding-top: 20px; padding-bottom: 10px;">
+                                    <?php echo $this->s['title'] ?>
+                                </div>
+                            </td>
+                            <td width="240">
+                                <img src="<?php echo $this->baseUrl('uploads/'); ?><?php echo $this->s['survey_id'] ?>.<?php echo $this->t['logo'] ?>" style="float: right; margin-top: 25px; margin-bottom: 20px; border: 0px;">
+                            </td>
+                        </tr>
+                    </table>
+                <?php else: ?>
+                    <div id="titlefont" class="titlecenter">
+                        <?php echo $this->s['title'] ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <div id="main" style="background: <?php echo $this->t['main'] ?>; color: <?php echo $this->t['mainfont'] ?>;">
+                <div id="asterisk"><?php echo $this->asterisk ?></div>
+                
+                <?php echo $this->layout()->content; ?>
+                
+            </div>
+        </div>
+
+        <style>
+            input {
+                background: <?php echo $this->t['frame'] ?>;
+                font-family: Arial;
+                color: <?php echo $this->t['titlefont'] ?>;
+                border: 0px;
+                font-size: 18px;
+                padding: 15px 35px 15px 35px;
+                font-weight: bold;
+                text-decoration: none;
+                cursor: pointer;
+            }
+            ul.errors {
+                color: <?php echo $this->t['frame'] ?>;
+                font-weight: bold;
+            }
+        </style>
+
+        <script type="text/javascript" src="<?php echo $this->baseUrl('js/jquery.corner.js'); ?>"></script>
+        <script type="text/javascript">
+            <?php if ( $this->t['radius'] ): ?>
+                $("#frame").corner();
+                $("#submit").corner();
+            <?php else: ?>
+                $("#frame").uncorner();
+                $("#submit").uncorner();
+            <?php endif; ?>   
+        </script>
+    </body>
+</html>

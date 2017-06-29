@@ -1,0 +1,59 @@
+<?php echo $this->content_disposition ?>
+<?php echo $this->content_type ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pl" lang="pl">
+    <head>
+        <?php echo $this->headMeta() ?>
+        <title><?php echo $this->survey['title'] ?></title>
+    </head>
+    <body style="font-size: 12px;">
+        
+        <?php foreach ($this->question as $k => $question): ?>
+        <h4 style="font-size: 15px; font-weight: bold;"><?php echo $question['question'] ?></h4>
+        <?php if( $question['type'] != 'form' ): ?>
+            <table>
+                <thead>
+                    <tr>
+                        <th>lp.</th>
+                        <th style="width: 150px;">Odpowiedź</th>
+                        <th>procent</th>
+                        <th>głosów</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php echo $this->getAnswers($question['question_id']); ?>
+                    <?php foreach ($this->answer as $i => $a): ?>
+                        <?php echo $this->getResponse($question['question_id'], $a['answer_id']); ?>
+                        <tr>
+                            <td><?php echo ($i + 1) ?>.</td>
+                            <td><?php echo $a['answer'] ?></td>
+                            <td style="text-align: right;"><?php echo $this->procent ?>%</td>
+                            <td style="text-align: center;"><?php echo $this->count ?></td>                   
+                        </tr>
+                    <?php endforeach; ?>    
+                        <tr><td></td></tr>
+               </tbody>
+            </table>
+
+        <?php else: ?>
+            <?php echo $this->getResponse($question['question_id'], null); ?>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>lp.</th>
+                        <th style="width: 630px;">Odpowiedź</th>
+                     </thead>
+                    <tbody>
+                    <?php foreach ($this->response as $i => $a): ?>
+                    <tr>
+                        <td><?php echo ($i + 1) ?>.</td>
+                        <td><?php echo $a['response'] ?></td>
+                    </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    </body>
+</html>

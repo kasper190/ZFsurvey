@@ -1,0 +1,25 @@
+<div class="stitlebox">
+    <div class="stitle"><?php echo $this->question['question'] ?></div>
+</div>
+<table style="width: 768px;">
+    <thead>
+        <tr>
+            <th></th>
+            <th style="width: 675px;">Odpowiedź</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($this->paginator as $i => $r): ?>
+        <tr>
+            <td style="padding: 0px 8px; font-weight: bold;"><?php echo ($i + 1 + (10 * $this->page - 10)) ?>.</td>
+            <td style="padding: 6px 10px 6px 0px; "><?php echo $r['response'] ?></td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+<div style="margin-top: 20px; margin-bottom: 10px; text-align: center;">
+    <?php echo $this->paginationControl($this->paginator, 'Sliding', 'result/pagination-control.phtml'); ?>
+</div>
+<div style="margin-left: 625px; margin-bottom: 30px;">
+    <a href="<?php echo $this->url(array('action' => 'questionall', 'controller' => 'result', 'question_id' => $this->question['question_id'])) ?>" class="btn">wszystkie odpowiedzi</a> 
+</div>

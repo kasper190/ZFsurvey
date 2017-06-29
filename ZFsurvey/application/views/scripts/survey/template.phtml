@@ -1,0 +1,93 @@
+<div id="surveybox">
+    <div class="boxoff"><div class="tekstbox"><a href="<?php echo $this->url(array('action' => 'editsurvey', 'controller' => 'survey', 'survey_id' => $this->survey_id), 'default') ?>" class="basiclink">Podstawowe</a></div></div>
+    <div class="boxon"><div class="tekstbox"><a href="<?php echo $this->url(array('action' => 'template', 'controller' => 'survey', 'survey_id' => $this->survey_id), 'default') ?>" class="basiclink">Wygląd</a></div></div>
+    <div class="boxoff"><div class="tekstbox"><a href="<?php echo $this->url(array('action' => 'questionlist', 'controller' => 'survey', 'survey_id' => $this->survey_id), 'default') ?>" class="basiclink">Pytania</a></div></div>
+    <div class="boxoff"><div class="tekstbox"><a href="<?php echo $this->url(array('controller' => 'survey', 'action' => 'address', 'survey_id' => $this->survey_id), 'default', true) ?>" class="basiclink">Adres</a></div></div>
+</div>
+
+<div id="templatebox">
+    <div id="templatesettings">
+        <div style="margin-top: 45px; margin-left: 10px;">
+            <?php echo $this->form ?>
+        </div>
+    </div>
+    <div id="templateshow">
+        <p>Podgląd:</p>
+        <div id="examplebg" class="color" style="background: <?php echo $this->object['background'] ?>;">
+            <div id="exampleframe" class="color" style="background: <?php echo $this->object['frame'] ?>;">
+                <div id="exampletitlefont" class="color" style="color: <?php echo $this->object['titlefont'] ?>;">
+                    <div id="exampletitle" class="exampletitlecenter">Tytuł ankiety</div>
+                    <div id="examplelogo">Logo</div>
+                </div>
+                <div id="examplemain" class="color" style="background: <?php echo $this->object['main'] ?>;">
+                    <div id="examplemainfont" class="color" style="color: <?php echo $this->object['mainfont'] ?>;">
+                        <b>Treść pytania numer jeden</b>
+                        <p>
+                              &diams; Odpowiedź numer 1
+                        <br />&diams; Odpowiedż numer 2
+                        <br />&diams; Odpowiedż numer 3
+                        <br />&diams; Odpowiedż numer 4
+                        </p>
+
+                        <br /><b>Treść pytania numer dwa</b>
+                        <p>
+                              &diams; Odpowiedż numer 1
+                        <br />&diams; Odpowiedż numer 2
+                        <br />&diams; Odpowiedż numer 3
+                        <br />&diams; Odpowiedż numer 4
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="islogo" style="display: none;">
+    <div style="margin-left: -40px; margin-top: -20px;">Logo:</div>
+    <img src="<?php echo $this->baseUrl('uploads/'); ?><?php echo $this->survey_id ?>.<?php echo $this->object['logo'] ?>">
+    <div style="margin-top: 5px; margin-bottom: 20px;">
+        <a href="<?php echo $this->url(array('action' => 'deletelogo', 'controller' => 'survey', 'survey_id' => $this->survey_id), 'default', true) ?>">Usuń logo</a>
+    </div>     
+</div>
+
+<script type="text/javascript" src="<?php echo $this->baseUrl('js/jscolor/jscolor.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl('js/jquery.corner.js'); ?>"></script>
+<script type="text/javascript">
+    
+<?php if ( $this->object['logo'] ): ?>
+    $("#filename").hide();
+    $("#filename-label").hide();
+    $( "#islogo" ).insertBefore( "#submit" );
+    $( "#islogo" ).css( "display", "block" );
+    $( "#exampletitle" ).removeClass( "exampletitlecenter" );
+<?php else: ?>
+    $("#examplelogo").hide();
+    $( "#exampletitle" ).addClass( "exampletitlecenter" );
+<?php endif; ?>
+<?php if ( $this->object['radius'] ): ?>
+    $("#exampleframe").corner();
+<?php else: ?>
+    $("#exampleframe").uncorner();
+<?php endif; ?>
+
+$('input[type=radio][name=radius]').change(function() {
+        if (this.value === '1') {
+            $("#exampleframe").corner();
+        }
+        else if (this.value === '0') {
+            $("#exampleframe").uncorner();
+        }
+});
+$('input[name=filename]').change(function() {
+    if( $(this).val() === '') {
+        $( "#exampletitle" ).addClass( "exampletitlecenter" );
+        $("#examplelogo").hide();
+    }
+    if( $(this).val() !== '') {
+        $( "#exampletitle" ).removeClass( "exampletitlecenter" );
+        $("#examplelogo").show();
+    } 
+});
+</script>

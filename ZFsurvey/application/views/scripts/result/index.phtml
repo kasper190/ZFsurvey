@@ -1,0 +1,130 @@
+<div id="headline"><?php echo $this->survey['title'] ?></div>
+
+<div id="resultbox">
+    <div class="resultcell" style="cursor: auto;">
+        <div class="resulttext" style="cursor: auto; font-weight: normal;">Liczba wypełnień: <b><?php echo $this->respondent ?></b></div>
+    </div>
+    <a href="<?php echo $this->url(array('action' => 'respondents', 'controller' => 'result', 'survey_id' => $this->survey['survey_id']), 'default', true) ?>" class="basiclink">
+    <div class="resultcell">
+        <div class="resulttext">Respondenci</div>
+        <div style="margin-left: 117px; margin-top: -17px;"><img src="<?php echo $this->baseUrl('images/respondents.png'); ?>" width="32" height="18"></div>
+    </div>
+    </a>
+    <a href="<?php echo $this->url(array('action' => 'report', 'controller' => 'result', 'survey_id' => $this->survey['survey_id']), 'default', true) ?>" class="basiclink">
+    <div class="resultcell">
+        <div class="resulttext">Raport PDF</div>
+        <div class="resultimg32"><img src="<?php echo $this->baseUrl('images/pdf.png'); ?>" width="32" height="32"></div>
+    </div>
+    </a>
+    <a href="<?php echo $this->url(array('action' => 'xls', 'controller' => 'result', 'survey_id' => $this->survey['survey_id']), 'default', true) ?>" class="basiclink">
+    <div class="resultcell">
+        <div class="resulttext">Wyniki XLS</div>
+        <div class="resultimg32"><img src="<?php echo $this->baseUrl('images/xls.png'); ?>" width="32" height="32"></div>
+    </div>
+    </a>
+</div>
+
+
+<?php foreach ($this->question as $k => $question): ?>
+    <?php if( $question['type'] != 'form' ): ?>
+        <div class="stitlebox">
+            <div class="stitle"><?php echo $question['question'] ?></div>
+            <div class="schart">
+                <i>wykresy:</i>
+                <img src="<?php echo $this->baseUrl('images/vertical.png'); ?>" class="getchart" style="margin-left: 23px;" alt="pionowy" title="Wykres pionowy" width="20" height="20" onclick="question_id = '<?php echo $question['question_id'] ?>'; qtype = 'vertical';">
+                <img src="<?php echo $this->baseUrl('images/horizontal.png'); ?>" class="getchart" style="margin-left: 5px;" alt="poziomy" title="Wykres poziomy" width="20" height="20" onclick="question_id = '<?php echo $question['question_id'] ?>'; qtype = 'horizontal';">
+                <img src="<?php echo $this->baseUrl('images/pie.png'); ?>" class="getchart" style="margin-left: 5px;" alt="kołowy" title="Wykres kołowy" width="20" height="20" onclick="question_id = '<?php echo $question['question_id'] ?>'; qtype = 'pie';">
+            </div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Odpowiedź</th>
+                    <th></th>
+                    <th style="padding: 0px 8px; width: 60px;">procent</th>
+                    <th style="padding: 0px 8px; width: 60px;">głosów</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php echo $this->getAnswers($question['question_id']); ?>
+                <?php foreach ($this->answer as $i => $a): ?>
+                    <?php echo $this->getResponse($question['question_id'], $a['answer_id']); ?>
+                    <tr>
+                        <td style="width: 30px; padding: 0px 8px; font-weight: bold;"><?php echo ($i + 1) ?>.</td>
+                        <td style="width: 210px; padding: 6px 10px 6px 0px; "><?php echo $a['answer'] ?></td>
+                        <td style="width: 300px; margin: 0px; padding: 0px 8px;"><div class="post" style="width: 100%; height: 19px; margin-top: -1px; padding: 0px; background: white; border: 1px solid black;"><div style="width: <?php echo $this->procent ?>%; height: 100%; background: #18548F;"></div></div></td>
+                        <td style="width: 50px; text-align: right;"><?php echo $this->procent ?>%</td>
+                        <td style="width: 50px; text-align: center;"><?php echo $this->count ?></td>                   
+                    </tr>
+                <?php endforeach; ?>   
+           </tbody>
+        </table>
+    <?php else: ?>
+        <div class="stitlebox">
+            <div class="stitle"><?php echo $question['question'] ?></div>
+        </div>
+        <?php echo $this->getResponse($question['question_id'], null, 10); ?>
+            <table style="width: 768px;">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th style="width: 675px;">Odpowiedź</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($this->response as $i => $r): ?>
+                <tr>
+                    <td style="padding: 0px 8px; font-weight: bold;"><?php echo ($i + 1) ?>.</td>
+                    <td style="padding: 6px 10px 6px 0px; "><?php echo $r['response'] ?></td>
+                </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+            <?php if( $this->count > 10 ): ?>
+            <div style="margin-left: 575px; margin-top: 20px; margin-bottom: 10px;">
+                <a href="<?php echo $this->url(array('action' => 'question', 'controller' => 'result', 'question_id' => $question['question_id'])) ?>" class="btn">zobacz wszystkie odpowiedzi</a> 
+            </div>
+            <?php endif; ?>
+    <?php endif; ?>
+<?php endforeach; ?>
+
+<div id="confirm">
+    <div id="confirminfo" style="width: 500px;">
+        <img src="<?php echo $this->baseUrl('images/close.png'); ?>" id="close" style="margin-left: 260px;" alt="Usuń" title="Usuń ankietę" width="32" height="32">
+        <div class="request" style="width: 500px; min-height: 270px;"></div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $(".getchart").click(function(){
+        $("#confirm").show();
+        $.ajax({
+            url: "<?=$this->url(array('action' => 'chart', 'format' => 'html')); ?>",
+            type: "POST",
+            data: "question_id=" + question_id + "&type=" + qtype,
+            success: function(html) {
+                $(".request").empty();
+                $(".request").append(html);
+            }
+        });   
+    });
+	$("#confirm").click(function(){
+        $("#confirm").hide();
+        $(".request").empty();
+    });
+    $("#close").click(function(){
+        $("#confirm").hide();
+        $(".request").empty();
+    });
+    $(".confirmno").click(function(){
+        $("#confirm").hide();
+        $(".request").empty();
+    });
+    $("#confirminfo").click(function(){  
+        return false;
+    });     
+});
+</script>

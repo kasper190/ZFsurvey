@@ -1,0 +1,137 @@
+<?php if( $this->case == 'create' ): ?>
+<div id="surveybox">
+    <div class="boxoff"><div class="tekstbox">Podstawowe</div></div>
+    <div class="boxoff"><div class="tekstbox">Wygląd</div></div>
+    <div class="boxon"><div class="tekstbox">Pytania</div></div>
+    <div class="boxoff"><div class="tekstbox">Adres</div></div>
+</div>
+<?php elseif( $this->case == 'edit' ): ?>
+<div id="surveybox">
+    <div class="boxoff"><div class="tekstbox"><a href="<?php echo $this->url(array('action' => 'editsurvey', 'controller' => 'survey', 'survey_id' => $this->survey_id), 'default') ?>" class="basiclink">Podstawowe</a></div></div>
+    <div class="boxoff"><div class="tekstbox"><a href="<?php echo $this->url(array('action' => 'template', 'controller' => 'survey', 'case' => 'edit', 'survey_id' => $this->survey_id,), 'default') ?>" class="basiclink">Wygląd</a></div></div>
+    <div class="boxon"><div class="tekstbox"><a href="<?php echo $this->url(array('action' => 'questionlist', 'controller' => 'survey', 'survey_id' => $this->survey_id), 'default') ?>" class="basiclink">Pytania</a></div></div>
+    <div class="boxoff"><div class="tekstbox"><a href="<?php echo $this->url(array('controller' => 'survey', 'action' => 'address', 'survey_id' => $this->survey_id), 'default', true) ?>" class="basiclink">Adres</a></div></div>
+</div>         
+<?php endif; ?>
+
+<div id="editquestionbox">   
+    <div id="questionrow">
+        
+        <div class="questiontypetext"></div>
+       
+        <div id="type1">
+           <?= $this->form; ?>
+        </div>
+
+        <div id="type2">
+           <?= $this->form2; ?>
+        </div>
+    </div>
+    
+    <div id="selectrow">
+        <div style="float: right;">
+           <?= $this->form3; ?>
+        </div>
+    </div>
+</div>
+<div style="position: relative; bottom: 62px; margin-left: 659px;">
+    <a href="<?php echo $this->url(array('controller' => 'survey', 'action' => 'edit', 'survey_id' => $this->survey_id), 'default', true) ?>" class="btn">Publikacja ankiety</a>
+</div>
+
+<script type="text/javascript">
+$('#questiontype').on("change",function() {
+    if( $(this).val() === "message" ) {
+        $type1 = $("#type1").hide();
+        $type2 = $("#type2").hide();
+        $(".questiontypetext").empty();
+    }
+    if( $(this).val() === "radio" ) {
+        $type1 = $("#type1").show();
+        $type2 = $("#type2").hide();
+        $(".questiontypetext").empty();
+        $(".questiontypetext").append('Pytanie jednokrotnego wyboru');
+        $("#qtype").val("radio");    
+    }
+    if( $(this).val() === "checkbox" ) {
+        $type1 = $("#type1").show();
+        $type2 = $("#type2").hide();
+        $(".questiontypetext").empty();
+        $(".questiontypetext").append('Pytanie wielokrotnego wyboru');
+        $("#qtype").val("checkbox");
+    }
+    if( $(this).val() === "select" ) {
+        $type1 = $("#type1").show();
+        $type2 = $("#type2").hide();
+        $(".questiontypetext").empty();
+        $(".questiontypetext").append('Lista rozwijana');
+        $("#qtype").val("select");       
+    }    
+    if( $(this).val() === "form" ) {
+        $type1 = $("#type1").hide();
+        $type2 = $("#type2").show();
+        $(".questiontypetext").empty();
+        $(".questiontypetext").append('Pytanie otwarte');
+        $("#qqtype").val("form");
+    }
+  }
+);
+
+$(document).ready(function() {
+    $type1 = $("#type1").hide();
+    $type2 = $("#type2").hide();
+
+    if( $("#questiontype").val() === "radio" ) {
+      $type1 = $("#type1").show();
+      $(".questiontypetext").append('Pytanie jednokrotnego wyboru');
+    }
+    if( $("#questiontype").val() === "checkbox" ) {
+      $type1 = $("#type1").show();
+      $(".questiontypetext").append('Pytanie wielokrotnego wyboru');
+    }
+    if( $("#questiontype").val() === "select" ) {
+      $type1 = $("#type1").show();
+      $(".questiontypetext").append('Lista rozwijana');
+    }
+    if( $("#questiontype").val() === "form" ) {
+      $type2 = $("#type2").show();
+      $(".questiontypetext").append('Pytanie otwarte');
+    }
+
+    $("#addElement").click(function() { 
+        addAnswer();
+    });
+    $("#removeElement").click(function() {
+        removeAnswer();
+    });
+});
+
+var id = 1;
+var id = $("#id").val();
+
+function addAnswer() {
+  $.ajax(
+    {
+        type: "POST",
+        url: "<?=$this->url(array('action' => 'newanswer', 'format' => 'html'));?>",
+        data: "id=" + id,
+        success: function(newElement) {
+            $("#addElement-label").before(newElement);
+            var lastAnswer = $("#id").val();
+            findAnswer = '#newAnswer' + lastAnswer + '';
+            $(findAnswer).addClass( "form" ).css("width", "380px");
+            $("#id").val(++id);
+        }
+    }
+  );
+}
+
+function removeAnswer() {
+    var lastAnswer = $("#id").val() - 1;
+    if ( lastAnswer === 0) {
+        return;
+    }
+    findAnswer = '*[id^=newAnswer' + lastAnswer + '-]';
+    $(findAnswer).remove();
+    $("#id").val(--id);
+}
+</script>

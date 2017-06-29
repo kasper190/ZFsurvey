@@ -1,0 +1,10 @@
+<div id="surveybox">
+    <div class="boxon"><div class="tekstbox"><a href="<?php echo $this->url(array('action' => 'editsurvey', 'controller' => 'survey', 'survey_id' => $this->survey_id), 'default') ?>" class="basiclink">Podstawowe</a></div></div>
+    <div class="boxoff"><div class="tekstbox"><a href="<?php echo $this->url(array('action' => 'template', 'controller' => 'survey', 'case' => 'edit', 'survey_id' => $this->survey_id), 'default') ?>" class="basiclink">Wygląd</a></div></div>
+    <div class="boxoff"><div class="tekstbox"><a href="<?php echo $this->url(array('action' => 'questionlist', 'controller' => 'survey', 'survey_id' => $this->survey_id), 'default') ?>" class="basiclink">Pytania</a></div></div>
+    <div class="boxoff"><div class="tekstbox"><a href="<?php echo $this->url(array('controller' => 'survey', 'action' => 'address', 'survey_id' => $this->survey_id), 'default', true) ?>" class="basiclink">Adres</a></div></div>
+</div>
+
+<div id="surveytitles">
+    <?php echo $this->form ?>
+</div>

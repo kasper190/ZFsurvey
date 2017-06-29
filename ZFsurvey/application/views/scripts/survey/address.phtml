@@ -1,0 +1,15 @@
+<div id="surveybox">
+    <div class="boxoff"><div class="tekstbox"><a href="<?php echo $this->url(array('action' => 'editsurvey', 'controller' => 'survey', 'survey_id' => $this->survey_id), 'default') ?>" class="basiclink">Podstawowe</a></div></div>
+    <div class="boxoff"><div class="tekstbox"><a href="<?php echo $this->url(array('action' => 'template', 'controller' => 'survey', 'case' => 'edit', 'survey_id' => $this->survey_id), 'default') ?>" class="basiclink">Wygląd</a></div></div>
+    <div class="boxoff"><div class="tekstbox"><a href="<?php echo $this->url(array('action' => 'questionlist', 'controller' => 'survey', 'survey_id' => $this->survey_id), 'default') ?>" class="basiclink">Pytania</a></div></div>
+    <div class="boxon"><div class="tekstbox"><a href="<?php echo $this->url(array('controller' => 'survey', 'action' => 'address', 'survey_id' => $this->survey_id), 'default', true) ?>" class="basiclink">Adres</a></div></div>
+</div>
+
+<div id="adress">
+    <h3>Twoja ankieta jest dostępna pod adresem:</h3>
+    <a href="<?php echo $this->url(array('action' => 'startmsg', 'controller' => 'show', 'id' => $this->survey_id), 'default', true) ?>">http://localhost/ankiety/public/show/startmsg/id/<?php echo $this->survey_id ?>/</a>
+</div>
+
+<div style="margin-left: 560px; margin-top: 40px;">
+    <a href="<?php echo $this->url(array('controller' => 'survey', 'action' => 'index', 'module' => 'default'), 'default', true) ?>" class="btn">Moje ankiety</a>
+</div>

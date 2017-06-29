@@ -1,0 +1,10 @@
+<div id="headline">Logowanie</div>
+<div id="auth">
+    <?php echo $this->form ?>
+    <p style="margin-left: 43px;">    
+        <a href="<?php echo $this->url(array('controller' => 'auth', 'action' => 'forgotpasswordform', 'module' => 'default'), 'default', true) ?>">Zapomniałem hasło</a>
+    </p>
+    <p style="margin-left: 43px;"> 
+        <a href="<?php echo $this->url(array('controller' => 'auth', 'action' => 'registerform', 'module' => 'default'), 'default', true) ?>">Zarejestruj się</a>
+    </p>
+</div>

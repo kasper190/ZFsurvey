@@ -1,0 +1,152 @@
+<?php if( $this->case == 'create' ): ?>
+<div id="surveybox">
+    <div class="boxoff"><div class="tekstbox">Podstawowe</div></div>
+    <div class="boxoff"><div class="tekstbox">Wygląd</div></div>
+    <div class="boxon"><div class="tekstbox">Pytania</div></div>
+    <div class="boxoff"><div class="tekstbox">Adres</div></div>
+</div>
+<?php elseif( $this->case == 'edit' ): ?>
+<div id="surveybox">
+    <div class="boxoff"><div class="tekstbox"><a href="<?php echo $this->url(array('action' => 'editsurvey', 'controller' => 'survey', 'survey_id' => $this->survey_id), 'default') ?>" class="basiclink">Podstawowe</a></div></div>
+    <div class="boxoff"><div class="tekstbox"><a href="<?php echo $this->url(array('action' => 'template', 'controller' => 'survey', 'case' => 'edit', 'survey_id' => $this->survey_id,), 'default') ?>" class="basiclink">Wygląd</a></div></div>
+    <div class="boxon"><div class="tekstbox"><a href="<?php echo $this->url(array('action' => 'questionlist', 'controller' => 'survey', 'survey_id' => $this->survey_id), 'default') ?>" class="basiclink">Pytania</a></div></div>
+    <div class="boxoff"><div class="tekstbox"><a href="<?php echo $this->url(array('controller' => 'survey', 'action' => 'address', 'survey_id' => $this->survey_id), 'default', true) ?>" class="basiclink">Adres</a></div></div>
+</div>         
+<?php endif; ?>
+
+<div id="editquestionbox">   
+    <div id="questionrow">
+        <div class="questiontypetext"></div>
+        <?php echo $this->lol; ?>
+        <div id="form">
+           <?= $this->form; ?>
+        </div>
+    </div>
+    <div id="selectrow">
+        <div style="float: right;">
+           <?= $this->form3; ?>
+        </div>
+    </div>
+</div>
+<div style="position: relative; bottom: 62px; margin-left: 659px;">
+    <a href="<?php echo $this->url(array('controller' => 'survey', 'action' => 'edit', 'survey_id' => $this->survey_id), 'default', true) ?>" class="btn">Publikacja ankiety</a>
+</div>
+
+<script type="text/javascript">
+function closeQuestion() {
+    $("#form").show();
+    $("[id*='answer']").each(function () {
+        $(this).show();
+    }); 
+    $("[id*='newAnswer']").each(function () {
+        $(this).show();
+    });
+    $("[id*='addElement']").each(function () {
+        $(this).show();
+    });
+    $("#removeElement").show();
+    $("#submit").removeClass("submitmargin");    
+}
+function openQuestion() {
+    $("#form").show();
+    $("[id*='answer']").each(function () {
+        $(this).hide();
+    }); 
+    $("[id*='newAnswer']").each(function () {
+        $(this).hide();
+    });
+    $("[id*='addElement']").each(function () {
+        $(this).hide();
+    });
+    $("#removeElement").hide();
+    $("#submit").addClass("submitmargin");
+}
+
+$('#questiontype').on("change",function() {
+    if( $(this).val() === "message" ) {        
+        $(".questiontypetext").empty();
+        $("#form").hide();
+    }
+    if( $(this).val() === "radio" ) {        
+        $(".questiontypetext").empty();
+        $(".questiontypetext").append('Pytanie jednokrotnego wyboru');
+        $("#qtype").val("radio");  
+        closeQuestion();
+    }
+    if( $(this).val() === "checkbox" ) {        
+        $(".questiontypetext").empty();
+        $(".questiontypetext").append('Pytanie wielokrotnego wyboru');
+        $("#qtype").val("checkbox");
+        closeQuestion();
+    }
+    if( $(this).val() === "select" ) {
+        $(".questiontypetext").empty();
+        $(".questiontypetext").append('Lista rozwijana');        
+        $("#qtype").val("select");
+        closeQuestion();
+    }    
+    if( $(this).val() === "form" ) {        
+        $(".questiontypetext").empty();
+        $(".questiontypetext").append('Pytanie otwarte');
+        $("#qtype").val("form");
+        openQuestion();
+    }   
+});
+
+$(document).ready(function() {
+    if( $("#questiontype").val() === "message" ) {
+        $("#form").hide();
+    }
+    if( $("#questiontype").val() === "radio" ) {
+        $(".questiontypetext").append('Pytanie jednokrotnego wyboru');
+        closeQuestion();
+    }
+    if( $("#questiontype").val() === "checkbox" ) {
+        $(".questiontypetext").append('Pytanie wielokrotnego wyboru');
+        closeQuestion();
+    }
+    if( $("#questiontype").val() === "select" ) {
+        $(".questiontypetext").append('Lista rozwijana');
+        closeQuestion();
+    }
+    if( $("#questiontype").val() === "form" ) {
+        $(".questiontypetext").append('Pytanie otwarte');
+        openQuestion();
+    }
+     
+    $("#addElement").click(function() { 
+        addAnswer();
+    });
+    $("#removeElement").click(function() {
+        removeAnswer();
+    });
+});
+
+var id = 1;
+var id = $("#id").val();
+
+function addAnswer() {
+    $.ajax({
+        type: "POST",
+        url: "<?=$this->url(array('action' => 'newanswer', 'format' => 'html'));?>",
+        data: "id=" + id,
+        success: function(newElement) {
+            $("#addElement-label").before(newElement);
+            var lastAnswer = $("#id").val();
+            findAnswer = '#newAnswer' + lastAnswer + '';
+            $(findAnswer).addClass( "form" ).css("width", "380px");
+            $("#id").val(++id);
+        }
+    });
+}
+
+function removeAnswer() {
+    var lastAnswer = $("#id").val() - 1;
+    if ( lastAnswer === 0) {
+        return;
+    }
+    findAnswer = '*[id^=newAnswer' + lastAnswer + '-]';
+    $(findAnswer).remove();
+    $("#id").val(--id);
+}
+</script>
